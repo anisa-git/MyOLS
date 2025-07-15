@@ -2,10 +2,14 @@ Package: MyOLS
 Type: Package
 Title: Regresi Linier Berganda dengan OLS
 Version: 0.1.0
-Author: Tim 2
-Maintainer: Tim 2 <23611109@students.uii.ac.id>
+Authors@R: c(
+    person("Anisa", "Sa'baniyah", email = "23611072@students.ac.id", role = c("aut", "cre")),
+    person("Wiwita", "Susanti", email = "23611082@students.ac.id", role = "ctb"),
+    person("Nurul Rahmadhani", "Elfieka", email = "23611093@students.ac.id", role = "aut"),
+    person("Laila Najmi", "Rei", email = "23611109@students.ac.id", role = "aut"),
+    person("Ghina Amelia", "Fitriani", email = "23611120@students.ac.id", role = "ctb")
+    )
 Description: Estimasi model regresi linier berganda (OLS) dengan matrix algebra.
 License: MIT
 Encoding: UTF-8
-LazyData: true
 RoxygenNote: 7.3.2

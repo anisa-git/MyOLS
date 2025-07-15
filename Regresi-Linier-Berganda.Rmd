@@ -1,0 +1,148 @@
+---
+title: "Regresi Linier Berganda"
+author: "Team 2"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    theme: flatly
+    highlight: tango
+    df_print: default
+    css: style.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(ggplot2)
+library(GGally)
+library(car)
+library(effects)
+```
+
+# Pendahuluan
+## R package
+
+Regresi linier berganda multivariate dengan metode Ordinary Least Square (OLS) adalah teknik statistik yang digunakan untuk memodelkan hubungan linear antara satu variabel dependen dengan dua atau lebih variabel independen (bebas).
+  Tujuannya untuk mengestimasi parameter model regresi yang meminimalkan jumlah kuadrat dari selisih antara nilai observasi dan nilai prediksi (error).
+
+
+## Persamaan Model
+
+Model regresi linier berganda dapat ditulis sebagai:
+  
+$$Y = \beta_0 + \beta_1X_1 + \beta_2X_2 + \cdots + \beta_pX_p + \epsilon$$
+
+Dimana:
+
+* \( Y \): Variabel dependen
+* \( X_1, X_2, \ldots, X_p \): Variabel independen
+* \( \beta_0 \): Intercept
+* \( \beta_1, \beta_2, \ldots, \beta_p \): Koefisien regresi
+* \( \epsilon \): Error term
+
+# Representasi Matriks
+
+Dalam bentuk matriks:
+  
+$$\mathbf{Y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\epsilon}$$
+
+Estimasi koefisien menggunakan ordinary least squares (OLS):
+  
+$$\hat{\boldsymbol{\beta}} = (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{Y}$$
+
+# Asumsi Model Regresi Linier Berganda OLS
+Asumsi yang harus dipenuhi agar estimasi OLS valid dan efisien:
+
+* Model regresi linier dalam parameter (liniearitas).
+* Nilai rata-rata error adalah nol \( E(\epsilon) = 0\).
+* Variansi error konstan (homoskedastisitas).
+* Tidak ada autokorelasi error.
+* Tidak terjadi multikolinearitas antara variabel bebas.
+* Error berdistribusi normal.
+
+# Implementasi Regresi Berganda di R
+### Studi Kasus 1
+Seorang peneliti pertanian di Kabupaten Pesisir Selatan ingin memahami bagaimana jumlah pupuk yang digunakan dan luas lahan tanam dapat mempengaruhi hasil panen padi petani di wilayah tersebut.
+
+sumber: BPS
+
+```{r matrix_representation}
+# Contoh data
+library(MyOLS)  # Package buatan sendiri
+
+hasil.panen <- read.csv2("D:/Kuliah/SEMESTER 3/ART/data panen pesisir selatan.csv", sep = ";")
+hasil.panen
+
+hasil.panen <- na.omit(hasil.panen)
+ 
+ # Konversi tipe kolom yang seharusnya numerik
+ hasil.panen$Pupuk <- as.numeric(hasil.panen$Pupuk)
+ hasil.panen$Luas_tanam <- as.numeric(hasil.panen$Luas_tanam)
+ hasil.panen$Hasil_panen <- as.numeric(hasil.panen$Hasil_panen)
+ 
+ # Buat X dengan intercept otomatis
+ X <- model.matrix(~Pupuk + Luas_tanam, data = hasil.panen)
+ Y <- matrix(as.numeric(hasil.panen$Hasil_panen), ncol = 1)
+ 
+ # Jalankan OLS
+ model <- MyOLS::ols_fit(X, Y)
+ 
+ # Hasil
+ print(model$coefficients)
+
+ # Prediksi
+ prediksi_Y <- predict_ols(model, X)
+ head(prediksi_Y)
+```
+
+
+## Membuat Model OLS
+```{r build_model}
+model_lm <- lm(Hasil_panen ~ Pupuk + Luas_tanam, data = hasil.panen)
+summary(model_lm)
+```
+## Interpretasi Output
+### Model Linier hasil panen
+$$Y = 2071.648 + 3.0421Pupuk + 3.7057Luastanam$$
+artinya: jika jumlah pupuk dan luas tanam sama dengan 0, maka hasil panen diprediksi sebesar 2071.648 kg.
+
+$$R^2=0.9715$$ 
+sekitar 97.15% variasi hasil panen bisa dijelaskan oleh jumlah pupuk dan luas tanam sisanya 2.85% dijelaskan oleh faktor-faktor lain yang belum dimasukkan kedalam model.
+
+# Diagnostik Model
+## Mengecek Asumsi OLS
+
+```{r diagnostics}
+par(mfrow = c(2, 2))
+plot(model_lm)
+```
+Berdasarkan dari grafik model regresi linear diatas, secara keseluruhan dapat disimpulkan bahwa model sudah cukup baik dan sebagian besar asumsi klasik regresi terpenuhi.
+
+## Uji Multikolinearitas
+
+```{r multicollinearity}
+vif(model_lm) # Variance Inflation Factor
+```
+
+Nilai VIF  5-10 menunjukkan masalah multikolinearitas.
+
+# Visualisasi
+## Plot Efek Marginal
+
+```{r marginal_effects}
+plot(allEffects(model_lm))
+```
+
+* Pupuk
+  semakin banyak pupuk, semakin tinggi hasil panen.
+
+* Luas tanam
+  pada grafik  luas tanam *effect plot* dapat diketahui bahwa luas tanam yang lebih besar berhubungan dengan hasil panen yang lebih tinggi.
+
+
+# Kesimpulan
+1. Regresi linier berganda memungkinkan kita memodelkan hubungan antara beberapa variabel prediktor dengan satu variabel respon
+2. Diagnostik model penting untuk memverifikasi asumsi
+3. R menyediakan berbagai alat untuk analisis dan visualisasi regresi
+4. Representasi matriks membantu memahami mekanisme di balik perhitungan regresi

@@ -7,7 +7,7 @@
 ols_fit(X, y)
 }
 \arguments{
-\item{X}{Matriks desain, kolom pertama biasanya adalah 1 (intercept).}
+\item{X}{Matriks desain (dengan kolom pertama intercept).}
 
 \item{y}{Vektor respons.}
 }
@@ -15,5 +15,27 @@ ols_fit(X, y)
 List: koefisien, fitted values, residual, dan sigma2.
 }
 \description{
-Menghitung koefisien regresi menggunakan metode OLS.
+Menghitung koefisien regresi menggunakan metode OLS dengan QR dekomposisi.
+}
+\examples{
+# Contoh data
+set.seed(123)
+n <- 100
+x1 <- rnorm(n)
+x2 <- rnorm(n)
+y <- 3 + 2*x1 - x2 + rnorm(n, sd = 0.5)
+
+# Tambahkan kolom intercept
+X <- cbind(1, x1, x2)
+
+# Fit model
+model <- ols_fit(X, y)
+
+# Lihat hasil
+model$coefficients
+model$sigma2
+
+# Prediksi nilai baru
+X_new <- cbind(1, c(0.5, -1), c(1.2, 0.3))
+predict_ols(model, X_new)
 }
