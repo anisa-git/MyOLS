@@ -14,14 +14,17 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
-library(ggplot2)
-library(GGally)
 library(car)
 library(effects)
 ```
 
 # Pendahuluan
-## R package
+
+## R Package
+
+R package adalah kumpulan fungsi, kode, data, dan dokumentasi yang dirancang untuk memperluas kemampuan bahasa pemrograman R. Dalam R, package berperan serupa seperti library dalam bahasa pemrograman lain seperti Python, yaitu menyediakan sekumpulan alat atau fungsi yang siap pakai untuk menyelesaikan tugas-tugas tertentu tanpa perlu menulis kode dari awal.
+
+## Regresi Linier Berganda
 
 Regresi linier berganda multivariate dengan metode Ordinary Least Square (OLS) adalah teknik statistik yang digunakan untuk memodelkan hubungan linear antara satu variabel dependen dengan dua atau lebih variabel independen (bebas).
   Tujuannya untuk mengestimasi parameter model regresi yang meminimalkan jumlah kuadrat dari selisih antara nilai observasi dan nilai prediksi (error).
@@ -31,14 +34,14 @@ Regresi linier berganda multivariate dengan metode Ordinary Least Square (OLS) a
 
 Model regresi linier berganda dapat ditulis sebagai:
   
-$$Y = \beta_0 + \beta_1X_1 + \beta_2X_2 + \cdots + \beta_pX_p + \epsilon$$
+$$Y = \beta_0 + \beta_1X_1 + \beta_2X_2 + \cdots + \beta_nX_n + \epsilon$$
 
 Dimana:
 
 * \( Y \): Variabel dependen
-* \( X_1, X_2, \ldots, X_p \): Variabel independen
+* \( X_1, X_2, \ldots, X_n \): Variabel independen
 * \( \beta_0 \): Intercept
-* \( \beta_1, \beta_2, \ldots, \beta_p \): Koefisien regresi
+* \( \beta_1, \beta_2, \ldots, \beta_n \): Koefisien regresi
 * \( \epsilon \): Error term
 
 # Representasi Matriks
@@ -86,7 +89,7 @@ hasil.panen <- na.omit(hasil.panen)
  Y <- matrix(as.numeric(hasil.panen$Hasil_panen), ncol = 1)
  
  # Jalankan OLS
- model <- MyOLS::ols_fit(X, Y)
+ model <- ols_fit(X, Y)
  
  # Hasil
  print(model$coefficients)
@@ -125,7 +128,7 @@ Berdasarkan dari grafik model regresi linear diatas, secara keseluruhan dapat di
 vif(model_lm) # Variance Inflation Factor
 ```
 
-Nilai VIF  5-10 menunjukkan masalah multikolinearitas.
+Nilai VIF > 5-10 menunjukkan masalah multikolinearitas.
 
 # Visualisasi
 ## Plot Efek Marginal
@@ -135,10 +138,12 @@ plot(allEffects(model_lm))
 ```
 
 * Pupuk
-  semakin banyak pupuk, semakin tinggi hasil panen.
+
+  semakin banyak pupuk yang diberikan, maka semakin tinggi hasil panen.
 
 * Luas tanam
-  pada grafik  luas tanam *effect plot* dapat diketahui bahwa luas tanam yang lebih besar berhubungan dengan hasil panen yang lebih tinggi.
+
+  pada grafik  luas tanam *effect plot* dapat diketahui bahwa luas tanam yang lebih besar(lebar) maka hasil panen akan lebih tinggi.
 
 
 # Kesimpulan

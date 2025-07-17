@@ -1,6 +1,6 @@
 Package: MyOLS
 Type: Package
-Title: Regresi Linier Berganda dengan OLS
+Title: Regresi Linier Berganda dengan OLS multivariate
 Version: 0.1.0
 Authors@R: c(
     person("Anisa", "Sa'baniyah", email = "23611072@students.ac.id", role = c("aut", "cre")),
