@@ -10,6 +10,6 @@ Authors@R: c(
     person("Ghina Amelia", "Fitriani", email = "23611120@students.ac.id", role = "ctb")
     )
 Description: Estimasi model regresi linier berganda (OLS) dengan matrix algebra.
-License: MIT
+License: MIT + file LICENSE
 Encoding: UTF-8
 RoxygenNote: 7.3.2
