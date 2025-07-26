@@ -14,7 +14,6 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
-library(car)
 library(effects)
 ```
 
@@ -117,8 +116,7 @@ sekitar 97.15% variasi hasil panen bisa dijelaskan oleh jumlah pupuk dan luas ta
 ## Mengecek Asumsi OLS
 
 ```{r diagnostics}
-par(mfrow = c(2, 2))
-plot(model_lm)
+normality(model)
 ```
 Berdasarkan dari grafik model regresi linear diatas, secara keseluruhan dapat disimpulkan bahwa model sudah cukup baik dan sebagian besar asumsi klasik regresi terpenuhi.
 

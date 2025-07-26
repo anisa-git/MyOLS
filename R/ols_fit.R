@@ -62,3 +62,5 @@ predict_ols <- function(model, X_new) {
   X_new <- as.matrix(X_new)
   return(X_new %*% model$coefficients)
 }
+
+
